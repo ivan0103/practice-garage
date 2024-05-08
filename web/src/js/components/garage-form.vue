@@ -3,7 +3,7 @@
         <h3>{{title}}</h3>
         <div class="row">
             <label class="col-sm-4">Name</label>
-            <input type="text" class="col-sm-8" v-model="name"/>
+            <input type="text" class="col-sm-8" v-model="garage.name"/>
         </div>
         <div class="row">
             <label class="col-sm-4">Brand</label>

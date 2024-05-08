@@ -10,6 +10,8 @@ class Garage(BaseModel):
 
     postal_country = ndb.StringProperty()
 
+    note = ndb.TextProperty(indexed=False)
+
     @classmethod
     def list(cls, name=None, brand=None, limit=20):
         """

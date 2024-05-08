@@ -11,18 +11,25 @@
                 <!--<button type="button" class="btn btn-primary" @click="save">Save</button>-->
                 <button type="button" class="btn btn-default" @click="editing=!editing; Object.assign(garage, updated_garage)">Cancel</button>
             </template>
+            <button type="button" class="pull-right btn btn-success" @click="toggleCars">Cars</button>
         </div>
         <div v-if="editing" class="edit-garage">
             <garage-form :garage="garage" @change="editing = false; Object.assign(updated_garage, garage)"></garage-form>
+        </div>
+        <!-- Only pass the garageId to car-list component -->
+        <div v-if="cars" class="car-list-container">
+            <car-list :garageId="garage.id"></car-list>
         </div>
     </div>
 </template>
 
 <script>
     import GarageForm from "./garage-form";
+    import CarList from "./car/car-list.vue";
+
     export default {
         name: "garage-list-item",
-        components: {GarageForm},
+        components: { GarageForm, CarList },
         props: {
             garage: {
                 type: Object,
@@ -32,7 +39,8 @@
         data() {
             return {
                 updated_garage: {},
-                editing: false
+                editing: false,
+                cars: false,
             }
         },
         mounted() {
@@ -44,7 +52,7 @@
                     type: 'DELETE',
                     contentType: 'application/json',
                     url: `/garages/`,
-                    data: JSON.stringify({'garage': this.garage.id})
+                    data: JSON.stringify({ 'garage': this.garage.id })
                 }).then((data) => {
                     this.$emit('delete', this.garage.id)
                 }).always(() => {
@@ -61,6 +69,9 @@
                     this.updated_garage = Object.assign({}, this.garage);
                 }).always(() => {
                 })
+            },
+            toggleCars() {
+                this.cars = !this.cars;
             }
         },
         watch: {
@@ -74,13 +85,12 @@
 
 <style scoped>
     .garage-item-grid {
-		display: grid;
-		grid-template-columns: 1fr 3fr;
-		grid-gap: 10px;
-		grid-auto-rows: min-content;
-		grid-template-areas:
-			"garage-name edit-garage";
-	}
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        grid-gap: 10px;
+        grid-auto-rows: min-content;
+        grid-template-areas: "garage-name edit-garage";
+    }
 
     .garage-name {
         grid-area: garage-name;
@@ -88,9 +98,7 @@
         grid-gap: 10px;
         grid-template-columns: 3fr 1fr;
         grid-auto-rows: min-content;
-        grid-template-areas:
-            "name btn-top"
-            ". btn-bottom";
+        grid-template-areas: "name btn-top" ". btn-bottom";
     }
 
     .btn-primary { grid-area: btn-top }
@@ -102,11 +110,7 @@
         display: grid;
         grid-gap: 10px;
         grid-template-columns: 6fr 1fr;
-        grid-template-areas:
-            "name v-model-name"
-            "brand v-model-brand"
-            "country v-model-country";
-        /* for some reason justify-items isn't working properly yet... */
+        grid-template-areas: "name v-model-name" "brand v-model-brand" "country v-model-country";
         justify-items: end | start;
     }
 
@@ -115,6 +119,11 @@
     .brand { grid-area: brand; }
     .v-model-brand { grid-area: v-model-brand; }
     .country { grid-area: country; }
-    .v-model-country {grid-area: v-model-country; }
+    .v-model-country { grid-area: v-model-country; }
 
+    .car-list-container {
+        grid-column-start: 1;
+        grid-column-end: 3;
+        margin-top: 10px;
+    }
 </style>
