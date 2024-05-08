@@ -73,7 +73,6 @@ def garage_delete():
     print("DELETE ALL -----------")
     for g in Garage.list():
         print(g)
-        g.delete()
     print("DELETE-------------")
     props = json.loads(request.data)
     print(props)

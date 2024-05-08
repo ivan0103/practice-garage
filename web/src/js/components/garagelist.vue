@@ -8,7 +8,7 @@
 		<ul class="list-group">
 		    <li v-for="g in garageList" class="list-group-item">
 				<!-- when a garage item is deleted it will raise change event and return the new list -->
-				<garage-list-item :garage="g" @change="updateGarageList">hello</garage-list-item>
+				<garage-list-item :garage="g.garage" @change="updateGarageList">hello</garage-list-item>
 			</li>
 		</ul>
 	</div>
