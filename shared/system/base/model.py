@@ -56,10 +56,11 @@ class BaseModel(ndb.Model, MixinDefaults):
         return entity
 
     @classmethod
-    def add(cls, props, **kwargs):
-        entity = cls(**kwargs)
+    def add(cls, props, **kwargs): 
+        entity = cls(**props)
         entity.fill(props=props)
-        return entity.save()
+        entity.save()
+        return entity
 
     def update(self, props):
         """
