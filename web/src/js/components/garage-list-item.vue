@@ -1,7 +1,7 @@
 <template>
     <div class="garage-item-grid">
         <div class="garage-name">
-            <span class="name">{{ garage.garage.name }}</span>
+            <span class="name">{{ garage.name }}</span>
             <button @click="refresh">Refresh</button>
             <template v-if="!editing">
                 <button type="button" class="btn btn-primary" @click="editing=!editing">Edit</button>
@@ -26,11 +26,7 @@
         props: {
             garage: {
                 type: Object,
-                default: () => ({
-                    name: '',
-                    brand: '',
-                    postal_country: ''
-                })
+                required: true
             }
         },
         data() {
