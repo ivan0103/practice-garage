@@ -2,13 +2,13 @@
 	<div class="grid-container">
 		<div class="title">
 			<h1>Garages</h1>
-			<new-garage @change="garageList=$event"></new-garage>
+			<new-garage @change="addGarageToList"></new-garage>
 
 		</div>
 		<ul class="list-group">
 		    <li v-for="g in garageList" class="list-group-item">
 				<!-- when a garage item is deleted it will raise change event and return the new list -->
-				<garage-list-item :garage="g" @change="garageList=$event">hello</garage-list-item>
+				<garage-list-item :garage="g" @change="updateGarageList">hello</garage-list-item>
 			</li>
 		</ul>
 	</div>
@@ -42,6 +42,14 @@
 					// this.loading = false
 				})
 			},
+			addGarageToList(newGarage) {
+                this.garageList.push(newGarage)
+				console.log("TEST---")
+				console.log(this.garageList)
+            },
+			updateGarageList(updatedGarageList) {
+        		this.garageList = updatedGarageList;
+    		}
 		},
 		created: function() {
 			this.load();

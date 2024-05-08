@@ -1,7 +1,7 @@
 <template>
     <div class="garage-item-grid">
         <div class="garage-name">
-            <span class="name">{{ garage.name }}</span>
+            <span class="name">{{ garage.garage.name }}</span>
             <button @click="refresh">Refresh</button>
             <template v-if="!editing">
                 <button type="button" class="btn btn-primary" @click="editing=!editing">Edit</button>
@@ -26,7 +26,11 @@
         props: {
             garage: {
                 type: Object,
-                required: true
+                default: () => ({
+                    name: '',
+                    brand: '',
+                    postal_country: ''
+                })
             }
         },
         data() {
@@ -36,22 +40,9 @@
             }
         },
         mounted() {
-            this.updated_garage = Object.assign({}, this.garage)
+            this.updated_garage = Object.assign({}, this.garage);
         },
         methods: {
-            // save() {
-            //     this.editing = false
-            //     $.ajax({
-            //         type: 'PUT',
-            //         contentType: 'application/json',
-            //         url: `/garages/`,
-            //         data: JSON.stringify(this.garage)
-            //     }).then((data) => {
-            //         // this.$emit('change', data)
-            //         Object.assign(this.updated_garage, this.garage)
-            //     }).always(() => {
-            //     })
-            // },
             deleteGarage() {
                 $.ajax({
                     type: 'DELETE',
@@ -70,16 +61,16 @@
                     url: `/garages/?garage=${this.garage.id}`,
                 }).then((data) => {
                     console.log(data)
-                    Object.assign(this.garage, data) // watch does not work this way then we need to use deep watch
-                    Object.assign(this.updated_garage, this.garage)
+                    Object.assign(this.garage, data);
+                    this.updated_garage = Object.assign({}, this.garage);
                 }).always(() => {
                 })
             }
         },
         watch: {
-            garage(g) {
-                console.log('garage update:' + g)
-                Object.assign(this.updated_garage, g)
+            garage(newVal) {
+                // Update updated_garage when garage changes
+                this.updated_garage = Object.assign({}, newVal);
             }
         }
     }
