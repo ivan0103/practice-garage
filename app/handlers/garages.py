@@ -4,7 +4,7 @@ import logging
 
 bp = Blueprint(name='garages', import_name=__name__, url_prefix='/garages')
 
-# @garages.route('/', defaults={'page': 'index'})
+#@bp.route('/', defaults={'page': 'index'})
 @bp.route('/', methods=["GET"])
 def garage_list():
     print(request.args)
@@ -35,7 +35,6 @@ def garage_list():
 
 @bp.route('/', methods=["POST"])
 def garage_add():
-    logging.warning(request.json)
     garage = Garage.add(props=request.json)
     return jsonify({
         'garage': {
@@ -63,8 +62,29 @@ def garage_update():
 
 @bp.route('/', methods=["DELETE"])
 def garage_delete():
-    print("Delete------------")
-    print(request.json)
-    garage = Garage.get(key=request.json.pop('garage'))
+    print("DELETE ALL -----------")
+    for g in Garage.list():
+        print(g)
+        g.delete()
+    print("DELETE-------------")
+    props = json.loads(request.data)
+    print(props)
+    garage_id = props['garage']
+    print(garage_id)
+    if garage_id is None:
+        return jsonify({'error': 'Garage ID not provided'}), 400
+    garage = Garage.get(key=garage_id)
+    print(garage)
+    if garage is None:
+        return jsonify({'error': 'Garage not found'}), 404
+    
     garage.delete()
-    return jsonify({'status': 'OK'})
+
+    return jsonify({
+        'garage': {
+            'id': garage.id,
+            'name': garage.name,
+            'brand': garage.brand,
+            'postal_country': garage.postal_country
+        }
+    })
