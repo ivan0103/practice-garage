@@ -7,7 +7,7 @@
       <div class="car-list-container">
         <ul class="list-group">
           <li v-for="car in carList" :key="car.id" class="list-group-item">
-            <car-list-item :garageId="garageId" :car="car.car"></car-list-item>
+            <car-list-item :garageId="garageId" :car="car.car" @deleteCar="deleteCarFromList"></car-list-item>
           </li>
         </ul>
       </div>

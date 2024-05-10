@@ -7,18 +7,18 @@
           <button type="button" class="btn btn-danger" @click="deleteCar">Delete</button>
         </template>
         <template v-else>
-          <button type="button" class="btn btn-default" @click="editing = false">Cancel</button>
+          <button type="button" class="btn btn-default" @click="editing = !editing;Object.assign(car, updated_car)">Cancel</button>
         </template>
       </div>
       <div v-if="editing" class="edit-car">
-        <car-form :car="car"></car-form>
+        <car-form :car="car" :garageId="garageId" @changeCar="editing = false; Object.assign(updated_car, car)"></car-form>
       </div>
     </div>
   </template>
   
   <script>
   import CarForm from "./car-form";
-  
+
   export default {
     name: "car-list-item",
     components: { CarForm },
@@ -34,9 +34,13 @@
     },
     data() {
       return {
+        updated_car: {},
         editing: false
       };
     },
+    mounted() {
+            this.updated_car = Object.assign({}, this.car);
+        },
     methods: {
         deleteCar() {
             $.ajax({
@@ -48,7 +52,12 @@
             }).always(() => {
             })
         }
-    }
+    },
+    watch: {
+            car(newVal) {
+                this.updated_car = Object.assign({}, newVal);
+            }
+        }
   };
   </script>
   

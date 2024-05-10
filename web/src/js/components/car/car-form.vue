@@ -17,7 +17,7 @@
 
 <script>
     export default {
-        name: "new-car",
+        name: "car-form",
         props: {
             garageId: {
                 type: [Number,String],
@@ -48,9 +48,10 @@
         methods: {
             add() {
                 const method = this.car ? 'PUT' : 'POST';
+                const url = `/garages/${this.garageId}/cars${this.car ? '/' + this.car.id : ''}`;
                 $.ajax({
                     type: method,
-                    url: `/garages/${this.garageId}/cars`,
+                    url: url,
                     contentType: 'application/json',
                     data: JSON.stringify(this.myCar),
                     timeout: 2000
