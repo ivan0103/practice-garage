@@ -2,12 +2,12 @@
     <div class="grid-container">
       <div class="title">
         <h1>Cars</h1>
-        <new-car :garageId="garageId.toString()" @add="addCarToList"></new-car>
+        <new-car :garageId="garageId.toString()" @changeCar="addCarToList"></new-car>
       </div>
       <div class="car-list-container">
         <ul class="list-group">
           <li v-for="car in carList" :key="car.id" class="list-group-item">
-            <car-list-item :garageId="garageId" :car="car" @delete="deleteCarFromList"></car-list-item>
+            <car-list-item :garageId="garageId" :car="car.car"></car-list-item>
           </li>
         </ul>
       </div>

@@ -16,11 +16,12 @@ def get_garage_cars(garage_id):
     cars = Car.list(garage_id = garage_id)
     # Convert cars to a list of dictionaries for JSON serialization
     car_list = [
-        {
-            'id': car.id,
-            'garage_id': garage_id,
-            'plate': car.plate,
-            'brand': car.brand
+        {   'car': {
+                'id': car.id,
+                'garage_id': garage_id,
+                'plate': car.plate,
+                'brand': car.brand
+            }
         }
         for car in cars
     ]

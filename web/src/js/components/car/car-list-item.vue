@@ -35,7 +35,7 @@
     },
     methods: {
       deleteCar() {
-        this.$emit("delete", this.car.id);
+        this.$emit("deleteCar", this.car.id);
       }
     }
   };

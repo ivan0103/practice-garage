@@ -40,7 +40,7 @@
                     data: JSON.stringify(this.car),
                     timeout: 2000
                 }).then((data) => {
-                    this.$emit('add', data)
+                    this.$emit('changeCar', data)
                     this.resetForm()
                 }).always(() => {
                     // this.loading = false
