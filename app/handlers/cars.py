@@ -1,97 +1,55 @@
 from flask import Blueprint, abort, jsonify, request
+from google.cloud import ndb  # Import ndb from google.cloud
 from shared.model.garage import Garage
+from shared.model.car import Car  # Import the Car model
 import logging
 import json
 
-bp = Blueprint(name='garages', import_name=__name__, url_prefix='/garages')
+bp = Blueprint(name='garage_cars', import_name=__name__, url_prefix='/garages/<garage_id>/cars')
 
-#@bp.route('/', defaults={'page': 'index'})
 @bp.route('/', methods=["GET"])
-def garage_list():
+def get_garage_cars(garage_id):
     print("GET")
-    for g in Garage.list():
-        print(g)
-    if request.args and 'garage' in request.args:
-        garage = Garage.get(key=request.args.get('garage'))
-        print("INSIDE")
-        print(garage)
-        return jsonify({
-            'garage': {
-                'id': garage.id,
-                'name': garage.name,
-                'brand': garage.brand,
-                'postal_country': garage.postal_country
-            }
-        })
-    return jsonify(
-        [
-            {
-                'garage': {
-                    'id': g.id,
-                    'name': g.name,
-                    'brand': g.brand,
-                    'postal_country': g.postal_country
-                }
-
-            } for g in Garage.list()
-        ]
-    )
+    # for g in Car.list():
+    #     g.delete()
+    #     print(g)
+    cars = Car.list(garage_id = garage_id)
+    # Convert cars to a list of dictionaries for JSON serialization
+    car_list = [
+        {
+            'id': car.id,
+            'garage_id': garage_id,
+            'plate': car.plate,
+            'brand': car.brand
+        }
+        for car in cars
+    ]
+    return jsonify(car_list)
 
 
 @bp.route('/', methods=["POST"])
-def garage_add():
+def car_add(garage_id):  # Change parameter name from garage to garage_id
     print("POST")
-    garage = Garage.add(props=request.json)
-    for g in Garage.list():
-        print(g)
-    return jsonify({
-        'garage': {
-            'id': garage.id,
-            'name': garage.name,
-            'brand': garage.brand,
-            'postal_country': garage.postal_country
-        }
-    })
-
-@bp.route('/', methods=["PUT"])
-def garage_update():
-    props = request.json
-    garage = Garage.get(key=props.pop('id'))
-    # print(garage)
-    garage.update(props=props)
-    return jsonify({
-        'garage': {
-            'id': garage.id,
-            'name': garage.name,
-            'brand': garage.brand,
-            'postal_country': garage.postal_country
-        }
-    })
-
-@bp.route('/', methods=["DELETE"])
-def garage_delete():
-    print("DELETE ALL -----------")
-    for g in Garage.list():
-        print(g)
-    print("DELETE-------------")
-    props = json.loads(request.data)
-    print(props)
-    garage_id = props['garage']
-    print(garage_id)
-    if garage_id is None:
-        return jsonify({'error': 'Garage ID not provided'}), 400
+    # for g in Car.list():
+    #     g.delete()
+    #     print(g)
+    data = request.json
     garage = Garage.get(key=garage_id)
-    print(garage)
-    if garage is None:
+    if (garage is None):
         return jsonify({'error': 'Garage not found'}), 404
-    
-    garage.delete()
-
+    car = Car.add(
+        props={
+            'garage_id': int(garage_id),
+            'plate': data['plate'],
+            'brand': data['brand']
+        }
+    )
+    print(car)
     return jsonify({
-        'garage': {
-            'id': garage.id,
-            'name': garage.name,
-            'brand': garage.brand,
-            'postal_country': garage.postal_country
+        'car': {
+            'id': car.id,
+            'garage_id': garage_id,
+            'plate': car.plate,
+            'brand': car.brand
         }
     })

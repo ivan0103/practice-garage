@@ -1,20 +1,14 @@
 from flask import Blueprint, abort, jsonify, request
 from shared.model.garage import Garage
 import logging
-import json
 
 bp = Blueprint(name='garages', import_name=__name__, url_prefix='/garages')
 
 #@bp.route('/', defaults={'page': 'index'})
 @bp.route('/', methods=["GET"])
 def garage_list():
-    print("GET")
-    for g in Garage.list():
-        print(g)
     if request.args and 'garage' in request.args:
         garage = Garage.get(key=request.args.get('garage'))
-        print("INSIDE")
-        print(garage)
         return jsonify({
             'garage': {
                 'id': garage.id,
@@ -40,10 +34,7 @@ def garage_list():
 
 @bp.route('/', methods=["POST"])
 def garage_add():
-    print("POST")
     garage = Garage.add(props=request.json)
-    for g in Garage.list():
-        print(g)
     return jsonify({
         'garage': {
             'id': garage.id,
@@ -57,7 +48,6 @@ def garage_add():
 def garage_update():
     props = request.json
     garage = Garage.get(key=props.pop('id'))
-    # print(garage)
     garage.update(props=props)
     return jsonify({
         'garage': {
@@ -70,23 +60,14 @@ def garage_update():
 
 @bp.route('/', methods=["DELETE"])
 def garage_delete():
-    print("DELETE ALL -----------")
-    for g in Garage.list():
-        print(g)
-    print("DELETE-------------")
     props = json.loads(request.data)
-    print(props)
     garage_id = props['garage']
-    print(garage_id)
     if garage_id is None:
         return jsonify({'error': 'Garage ID not provided'}), 400
     garage = Garage.get(key=garage_id)
-    print(garage)
     if garage is None:
         return jsonify({'error': 'Garage not found'}), 404
-    
     garage.delete()
-
     return jsonify({
         'garage': {
             'id': garage.id,

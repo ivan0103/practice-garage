@@ -32,7 +32,6 @@
         },
         methods: {
             save() {
-                console.log(this.garage)
                 $.ajax({
                     type: 'POST',
                     url: `/garages/`,

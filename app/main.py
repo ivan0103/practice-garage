@@ -8,12 +8,14 @@ from flask import Flask, render_template, jsonify, request
 
 from shared.system import datastore
 from shared.model.garage import Garage
+from shared.model.car import Car
 from google.cloud import ndb
 from handlers import garages
+from handlers import cars
 
 app = Flask(__name__)
 app.register_blueprint(garages.bp)
-
+app.register_blueprint(cars.bp)
 
 
 

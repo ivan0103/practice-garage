@@ -1,16 +1,18 @@
 <template>
     <div class="grid-container">
-        <div class="title">
-            <h1>Cars</h1>
-            <new-car :garageId="garageId.toString()"></new-car>
-        </div>
+      <div class="title">
+        <h1>Cars</h1>
+        <new-car :garageId="garageId.toString()" @add="addCarToList"></new-car>
+      </div>
+      <div class="car-list-container">
         <ul class="list-group">
-            <li v-for="car in carList" :key="car.id" class="list-group-item">
-                <car-list-item :garageId="garageId" :car="car"></car-list-item>
-            </li>
+          <li v-for="car in carList" :key="car.id" class="list-group-item">
+            <car-list-item :garageId="garageId" :car="car" @delete="deleteCarFromList"></car-list-item>
+          </li>
         </ul>
+      </div>
     </div>
-</template>
+  </template>
 
 <script>
     import CarListItem from "./car-list-item";
@@ -45,6 +47,7 @@
 				})
 			},
 			addCarToList(newCar) {
+                console.log("ADDED")
                 this.carList.push(newCar)
             },
 			deleteCarFromList(carId) {
@@ -62,24 +65,31 @@
 </script>
 
 <style scoped>
-    .grid-container {
-        display: grid;
-        grid-template-columns: 2fr 6fr;
-        grid-gap: 10px;
-        grid-auto-rows: min-content;
-        grid-template-areas: "title car-list ";
-    }
+  .grid-container {
+    display: grid;
+    grid-template-columns: 2fr 6fr;
+    grid-gap: 10px;
+    grid-auto-rows: min-content;
+    grid-template-areas: "title car-list ";
+  }
 
-    .title {
-        grid-area: title;
-        margin-right: 20px;
-    }
+  .title {
+    grid-area: title;
+    margin-right: 20px;
+  }
 
-    .list-group {
-        grid-area: car-list;
-    }
+  .car-list-container {
+    grid-area: car-list;
+    max-height: 300px; /* Set a fixed height */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
 
-    .add-car {
-        margin: 4px;
-    }
+  .list-group {
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+  }
+
+  .list-group-item {
+    list-style: none; /* Remove default list style */
+  }
 </style>
