@@ -7,11 +7,11 @@
           <button type="button" class="btn btn-danger" @click="deleteCar">Delete</button>
         </template>
         <template v-else>
-          <button type="button" class="btn btn-default" @click="editing = !editing;Object.assign(car, updated_car)">Cancel</button>
+          <button type="button" class="btn btn-default" @click="editing = !editing">Cancel</button>
         </template>
       </div>
       <div v-if="editing" class="edit-car">
-        <car-form :car="car" :garageId="garageId" @changeCar="editing = false; Object.assign(updated_car, car)"></car-form>
+        <car-form :car="car" :garageId="garageId" @changeCar="editing = false"></car-form>
       </div>
     </div>
   </template>

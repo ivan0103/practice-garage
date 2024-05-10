@@ -8,12 +8,12 @@
                 <button type="button" class="btn btn-danger" @click="deleteGarage">Delete</button>
             </template>
             <template v-else>
-                <button type="button" class="btn btn-default" @click="editing=!editing; Object.assign(garage, updated_garage)">Cancel</button>
+                <button type="button" class="btn btn-default" @click="editing=!editing">Cancel</button>
             </template>
             <button type="button" class="pull-right btn btn-success" @click="toggleCars">Cars</button>
         </div>
         <div v-if="editing" class="edit-garage">
-            <garage-form :garage="garage" @change="editing = false; Object.assign(updated_garage, garage)"></garage-form>
+            <garage-form :garage="garage" @change="editing = false"></garage-form>
         </div>
         <div v-if="cars" class="car-list-container">
             <car-list :garageId="garage.id"></car-list>
