@@ -2,17 +2,17 @@
     <div class="car-item-grid">
       <div class="car-name">
         <span class="plate">{{ car.plate }}</span>
-        <!-- <template v-if="!editing">
+        <template v-if="!editing">
           <button type="button" class="btn btn-primary" @click="editing = true">Edit</button>
           <button type="button" class="btn btn-danger" @click="deleteCar">Delete</button>
         </template>
         <template v-else>
           <button type="button" class="btn btn-default" @click="editing = false">Cancel</button>
-        </template> -->
+        </template>
       </div>
-      <!-- <div v-if="editing" class="edit-car">
+      <div v-if="editing" class="edit-car">
         <car-form :car="car"></car-form>
-      </div> -->
+      </div>
     </div>
   </template>
   
@@ -26,7 +26,11 @@
       car: {
         type: Object,
         required: true
-      }
+      },
+      garageId: {
+                type: [Number, String],
+                required: true
+            }
     },
     data() {
       return {
@@ -34,9 +38,16 @@
       };
     },
     methods: {
-      deleteCar() {
-        this.$emit("deleteCar", this.car.id);
-      }
+        deleteCar() {
+            $.ajax({
+                type: 'DELETE',
+                contentType: 'application/json',
+                url: `/garages/${this.garageId}/cars/${this.car.id}`
+            }).then((data) => {
+                this.$emit('deleteCar', this.car.id)
+            }).always(() => {
+            })
+        }
     }
   };
   </script>

@@ -9,12 +9,9 @@ bp = Blueprint(name='garage_cars', import_name=__name__, url_prefix='/garages/<g
 
 @bp.route('/', methods=["GET"])
 def get_garage_cars(garage_id):
-    print("GET")
     # for g in Car.list():
     #     g.delete()
-    #     print(g)
     cars = Car.list(garage_id = garage_id)
-    # Convert cars to a list of dictionaries for JSON serialization
     car_list = [
         {   'car': {
                 'id': car.id,
@@ -30,10 +27,8 @@ def get_garage_cars(garage_id):
 
 @bp.route('/', methods=["POST"])
 def car_add(garage_id):  # Change parameter name from garage to garage_id
-    print("POST")
     # for g in Car.list():
     #     g.delete()
-    #     print(g)
     data = request.json
     garage = Garage.get(key=garage_id)
     if (garage is None):
@@ -45,7 +40,45 @@ def car_add(garage_id):  # Change parameter name from garage to garage_id
             'brand': data['brand']
         }
     )
-    print(car)
+    return jsonify({
+        'car': {
+            'id': car.id,
+            'garage_id': garage_id,
+            'plate': car.plate,
+            'brand': car.brand
+        }
+    })
+
+@bp.route('/<car_id>', methods=["PUT"])
+def car_update(garage_id, car_id):
+    props = request.json
+    print(props)
+    car = Car.get(key=car_id)
+    car.update(props=props)
+    return jsonify({
+        'car': {
+            'id': car.id,
+            'garage_id': garage_id,
+            'plate': car.plate,
+            'brand': car.brand
+        }
+    })
+
+@bp.route('/<car_id>', methods=["DELETE"])
+def car_delete(garage_id, car_id):
+    print("DELETE")
+    if garage_id is None:
+        return jsonify({'error': 'Garage ID not provided'}), 400
+    garage = Garage.get(key=garage_id)
+    if garage is None:
+        return jsonify({'error': 'Garage not found'}), 404
+    if car_id is None:
+        return jsonify({'error': 'Car ID not provided'}), 400
+    car = Car.get(key=car_id)
+    if car is None:
+        return jsonify({'error': 'Car not found'}), 404
+    
+    car.delete()
     return jsonify({
         'car': {
             'id': car.id,

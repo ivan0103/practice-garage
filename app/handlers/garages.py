@@ -1,6 +1,8 @@
 from flask import Blueprint, abort, jsonify, request
 from shared.model.garage import Garage
+from shared.model.car import Car  # Import the Car model
 import logging
+import json
 
 bp = Blueprint(name='garages', import_name=__name__, url_prefix='/garages')
 
@@ -68,6 +70,11 @@ def garage_delete():
     if garage is None:
         return jsonify({'error': 'Garage not found'}), 404
     garage.delete()
+
+    cars = Car.list(garage_id = garage_id)
+    for c in cars:
+        c.delete()
+
     return jsonify({
         'garage': {
             'id': garage.id,
