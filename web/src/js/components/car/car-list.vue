@@ -2,7 +2,7 @@
     <div class="grid-container">
       <div class="title">
         <h1>Cars</h1>
-        <new-car :garageId="garageId.toString()" @changeCar="addCarToList"></new-car>
+        <car-form :garageId="garageId" @changeCar="addCarToList"></car-form>
       </div>
       <div class="car-list-container">
         <ul class="list-group">
@@ -16,14 +16,14 @@
 
 <script>
     import CarListItem from "./car-list-item";
-    import NewCar from "./new-car";
+    import CarForm from "./car-form";
 
     export default {
         name: 'car-list',
-        components: { NewCar, CarListItem },
+        components: { CarForm, CarListItem },
         props: {
             garageId: {
-                type: [String, Number], // Accepts both string and number
+                type: [String, Number],
                 required: true
             }
         },
@@ -40,14 +40,12 @@
 					contentType: 'application/json',
 					timeout: 60000
 				}).then((data) => {
-					console.log(data)
 					this.carList = data
 				}).always(() => {
-					// this.loading = false
+					this.loading = false
 				})
 			},
 			addCarToList(newCar) {
-                console.log("ADDED")
                 this.carList.push(newCar)
             },
 			deleteCarFromList(carId) {
@@ -58,7 +56,6 @@
 			},
         },
         created() {
-            // Load car data when the component is created
             this.load();
         }
     }

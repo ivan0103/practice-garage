@@ -2,13 +2,12 @@
 	<div class="grid-container">
 		<div class="title">
 			<h1>Garages</h1>
-			<new-garage @change="addGarageToList"></new-garage>
+			<garage-form @change="addGarageToList"></garage-form>
 
 		</div>
 		<ul class="list-group">
 		    <li v-for="g in garageList" class="list-group-item">
-				<!-- when a garage item is deleted it will raise change event and return the new list -->
-				<garage-list-item :garage="g.garage" @delete="deleteGarageFromList">hello</garage-list-item>
+				<garage-list-item :garage="g.garage" @delete="deleteGarageFromList"></garage-list-item>
 			</li>
 		</ul>
 	</div>
@@ -17,15 +16,13 @@
 <script>
     import GarageListItem from "./garage-list-item";
     import GarageForm from "./garage-form";
-	import NewGarage from "./new-garage";
 
 	export default {
 		name: 'garage-list',
-		components: {NewGarage, GarageListItem, GarageForm},
+		components: {GarageListItem, GarageForm},
 		data: function () {
 			return {
-				garageList: [],
-                garageDialog: true,
+				garageList: []
 			}
 		},
 		methods: {
@@ -36,10 +33,9 @@
 					contentType: 'application/json',
 					timeout: 60000
 				}).then((data) => {
-					console.log(data)
 					this.garageList = data
 				}).always(() => {
-					// this.loading = false
+					this.loading = false
 				})
 			},
 			addGarageToList(newGarage) {

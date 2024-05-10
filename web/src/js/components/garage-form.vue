@@ -1,17 +1,17 @@
 <template>
     <div>
-        <h3>{{title}}</h3>
+        <h3>{{ title }}</h3>
         <div class="row">
             <label class="col-sm-4">Name</label>
-            <input type="text" class="col-sm-8" v-model="garage.name"/>
+            <input type="text" class="col-sm-8" v-model="myGarage.name"/>
         </div>
         <div class="row">
             <label class="col-sm-4">Brand</label>
-            <input type="text" class="col-sm-8" v-model="garage.brand"/>
+            <input type="text" class="col-sm-8" v-model="myGarage.brand"/>
         </div>
         <div class="row">
             <label class="col-sm-4">Country</label>
-            <input type="text" class="col-sm-8" v-model="garage.postal_country"/>
+            <input type="text" class="col-sm-8" v-model="myGarage.postal_country"/>
         </div>
         <div class="row">
             <button class="pull-right btn btn-success" @click="save">Save</button>
@@ -26,66 +26,55 @@
             garage: {
                 type: Object,
                 required: false,
-                default: ''
+                default: null
             }
         },
         computed: {
             title() {
-                return this.garage.id ? 'Edit garage': 'Add new garage'
-            },
-            name: {
-                set(val) {
-                    this.garage.name = val
-                },
-                get() {
-                    return this.garage.name
-                }
+                return this.garage ? 'Edit garage' : 'Add new garage';   
             }
         },
         data() {
             return {
-                myGarage: {}
-            }
+                myGarage: {
+                    name: '',
+                    brand: '',
+                    postal_country: ''
+                }
+            };
         },
         mounted() {
-            console.log(JSON.stringify(this.garage))
-            Object.assign(this.myGarage, this.garage)
+                Object.assign(this.myGarage, this.garage);
         },
         methods:{
             save() {
-                if (this.garage.id) {
-                    Object.assign(this.myGarage, this.garage)
-                }
+                const method = this.garage ? 'PUT' : 'POST';
                 $.ajax({
-					type: this.myGarage.id ? 'PUT':'POST',
-					url: `/garages/`,
-					contentType: 'application/json',
+                    type: method,
+                    url: `/garages/`,
+                    contentType: 'application/json',
                     data: JSON.stringify(this.myGarage),
-					timeout: 2000
-				}).then((data) => {
+                    timeout: 2000
+                }).then((data) => {
                     this.$emit('change', data)
-                    if (this.garage.id === undefined){
+                    if (this.garage){
                         this.resetForm()
                     }
-				}).always(() => {
-					// this.loading = false
-				})
+                }).always(() => {
+                    this.loading = false;
+                });
             },
             resetForm() {
-                if (this.garage.id) {
-                    Object.assign(this.myGarage, this.garage)
+                if (this.garage) {
+                    Object.assign(this.garage, this.myGarage);
                 } else {
                     this.myGarage = {
                         name: '',
                         brand: '',
                         postal_country: ''
-                    }
-                    Object.assign(this.garage, this.myGarage)
+                    };
                 }
-            },
-
-        },
-        watch: {
+            }
         }
     }
 </script>

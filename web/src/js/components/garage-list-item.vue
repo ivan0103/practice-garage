@@ -8,7 +8,6 @@
                 <button type="button" class="btn btn-danger" @click="deleteGarage">Delete</button>
             </template>
             <template v-else>
-                <!--<button type="button" class="btn btn-primary" @click="save">Save</button>-->
                 <button type="button" class="btn btn-default" @click="editing=!editing; Object.assign(garage, updated_garage)">Cancel</button>
             </template>
             <button type="button" class="pull-right btn btn-success" @click="toggleCars">Cars</button>
@@ -16,7 +15,6 @@
         <div v-if="editing" class="edit-garage">
             <garage-form :garage="garage" @change="editing = false; Object.assign(updated_garage, garage)"></garage-form>
         </div>
-        <!-- Only pass the garageId to car-list component -->
         <div v-if="cars" class="car-list-container">
             <car-list :garageId="garage.id"></car-list>
         </div>
