@@ -1,10 +1,10 @@
 from google.cloud import ndb
 from shared.system.base.model import BaseModel
-from shared.model.garage import Garage  # Import the Garage model
+from shared.model.garage import Garage
 
 class Car(BaseModel):
     """The Car model"""
-    garage = ndb.KeyProperty(kind=Garage)  # Correct kind to Garage
+    garage = ndb.KeyProperty(kind=Garage)
     plate = ndb.StringProperty()
     brand = ndb.StringProperty()
 

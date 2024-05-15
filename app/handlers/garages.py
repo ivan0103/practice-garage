@@ -1,6 +1,6 @@
 from flask import Blueprint, abort, jsonify, request
 from shared.model.garage import Garage
-from shared.model.car import Car  # Import the Car model
+from shared.model.car import Car
 import logging
 import json
 

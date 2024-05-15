@@ -1,7 +1,7 @@
 from flask import Blueprint, abort, jsonify, request
-from google.cloud import ndb  # Import ndb from google.cloud
+from google.cloud import ndb
 from shared.model.garage import Garage
-from shared.model.car import Car  # Import the Car model
+from shared.model.car import Car
 import logging
 import json
 
@@ -32,7 +32,7 @@ def car_add(garage_id):
     if garage is None:
         return jsonify({'error': 'Garage not found'}), 404
     car = Car.create(
-        garage,  # Set the garage as the parent of the car
+        garage,
         plate=data['plate'],
         brand=data['brand']
     )
