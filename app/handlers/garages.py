@@ -62,7 +62,7 @@ def garage_delete():
         return jsonify({'error': 'Garage not found'}), 404
     garage.delete()
 
-    cars = Car.list(garage_id = garage_id)
+    cars = Car.list(garage=garage.key)
     for c in cars:
         c.delete()
 
