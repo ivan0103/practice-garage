@@ -7,7 +7,7 @@
 		</div>
 		<ul class="list-group">
 		    <li v-for="g in garageList" class="list-group-item">
-				<garage-list-item :garage="g.garage" @delete="deleteGarageFromList"></garage-list-item>
+				<garage-list-item :garage="g" @delete="deleteGarageFromList"></garage-list-item>
 			</li>
 		</ul>
 	</div>
@@ -33,6 +33,7 @@
 					contentType: 'application/json',
 					timeout: 60000
 				}).then((data) => {
+					console.log(data)
 					this.garageList = data
 				}).always(() => {
 					this.loading = false
@@ -42,7 +43,7 @@
                 this.garageList.push(newGarage)
             },
 			deleteGarageFromList(garageId) {
-				const index = this.garageList.findIndex(item => item.garage.id === garageId);
+				const index = this.garageList.findIndex(item => item.id === garageId);
 				if (index !== -1) {
 					this.garageList.splice(index, 1);
 				}

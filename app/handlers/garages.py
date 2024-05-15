@@ -12,23 +12,18 @@ def garage_list():
     if request.args and 'garage' in request.args:
         garage = Garage.get(key=request.args.get('garage'))
         return jsonify({
-            'garage': {
                 'id': garage.id,
                 'name': garage.name,
                 'brand': garage.brand,
                 'postal_country': garage.postal_country
-            }
         })
     return jsonify(
         [
             {
-                'garage': {
                     'id': g.id,
                     'name': g.name,
                     'brand': g.brand,
                     'postal_country': g.postal_country
-                }
-
             } for g in Garage.list()
         ]
     )
@@ -38,12 +33,10 @@ def garage_list():
 def garage_add():
     garage = Garage.add(props=request.json)
     return jsonify({
-        'garage': {
             'id': garage.id,
             'name': garage.name,
             'brand': garage.brand,
             'postal_country': garage.postal_country
-        }
     })
 
 @bp.route('/', methods=["PUT"])
@@ -52,12 +45,10 @@ def garage_update():
     garage = Garage.get(key=props.pop('id'))
     garage.update(props=props)
     return jsonify({
-        'garage': {
             'id': garage.id,
             'name': garage.name,
             'brand': garage.brand,
             'postal_country': garage.postal_country
-        }
     })
 
 @bp.route('/', methods=["DELETE"])
@@ -76,10 +67,8 @@ def garage_delete():
         c.delete()
 
     return jsonify({
-        'garage': {
             'id': garage.id,
             'name': garage.name,
             'brand': garage.brand,
             'postal_country': garage.postal_country
-        }
     })

@@ -7,7 +7,7 @@
       <div class="car-list-container">
         <ul class="list-group">
           <li v-for="car in carList" :key="car.id" class="list-group-item">
-            <car-list-item :garageId="garageId" :car="car.car" @deleteCar="deleteCarFromList"></car-list-item>
+            <car-list-item :garageId="garageId" :car="car" @deleteCar="deleteCarFromList"></car-list-item>
           </li>
         </ul>
       </div>
@@ -49,7 +49,7 @@
                 this.carList.push(newCar)
             },
 			deleteCarFromList(carId) {
-				const index = this.carList.findIndex(item => item.car.id === carId);
+				const index = this.carList.findIndex(item => item.id === carId);
 				if (index !== -1) {
 					this.carList.splice(index, 1);
 				}

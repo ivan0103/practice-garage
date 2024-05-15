@@ -12,6 +12,8 @@ class Garage(BaseModel):
 
     note = ndb.TextProperty(indexed=False)
 
+    note = ndb.TextProperty(indexed = False)
+
     @classmethod
     def list(cls, name=None, brand=None, limit=20):
         """

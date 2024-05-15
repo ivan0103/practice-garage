@@ -13,12 +13,11 @@ def get_garage_cars(garage_id):
     #     g.delete()
     cars = Car.list(garage_id = garage_id)
     car_list = [
-        {   'car': {
+        {
                 'id': car.id,
                 'garage_id': garage_id,
                 'plate': car.plate,
                 'brand': car.brand
-            }
         }
         for car in cars
     ]
@@ -41,12 +40,10 @@ def car_add(garage_id):  # Change parameter name from garage to garage_id
         }
     )
     return jsonify({
-        'car': {
             'id': car.id,
             'garage_id': garage_id,
             'plate': car.plate,
             'brand': car.brand
-        }
     })
 
 @bp.route('/<car_id>', methods=["PUT"])
@@ -56,12 +53,10 @@ def car_update(garage_id, car_id):
     car = Car.get(key=car_id)
     car.update(props=props)
     return jsonify({
-        'car': {
             'id': car.id,
             'garage_id': garage_id,
             'plate': car.plate,
             'brand': car.brand
-        }
     })
 
 @bp.route('/<car_id>', methods=["DELETE"])
@@ -80,10 +75,8 @@ def car_delete(garage_id, car_id):
     
     car.delete()
     return jsonify({
-        'car': {
             'id': car.id,
             'garage_id': garage_id,
             'plate': car.plate,
             'brand': car.brand
-        }
     })
