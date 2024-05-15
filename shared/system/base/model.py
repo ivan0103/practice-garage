@@ -57,7 +57,7 @@ class BaseModel(ndb.Model, MixinDefaults):
 
     @classmethod
     def add(cls, props, **kwargs): 
-        entity = cls(**props)
+        entity = cls(**kwargs)
         entity.fill(props=props)
         entity.save()
         return entity

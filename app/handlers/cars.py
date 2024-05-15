@@ -9,15 +9,16 @@ bp = Blueprint(name='garage_cars', import_name=__name__, url_prefix='/garages/<g
 
 @bp.route('/', methods=["GET"])
 def get_garage_cars(garage_id):
-    # for g in Car.list():
-    #     g.delete()
-    cars = Car.list(garage_id = garage_id)
+    garage = Garage.get(garage_id)
+    if garage is None:
+        return jsonify({'error': 'Garage not found'}), 404
+    cars = Car.list(garage=garage.key)
     car_list = [
         {
-                'id': car.id,
-                'garage_id': garage_id,
-                'plate': car.plate,
-                'brand': car.brand
+            'id': car.id,
+            'garage_id': garage_id,
+            'plate': car.plate,
+            'brand': car.brand
         }
         for car in cars
     ]
@@ -25,25 +26,21 @@ def get_garage_cars(garage_id):
 
 
 @bp.route('/', methods=["POST"])
-def car_add(garage_id):  # Change parameter name from garage to garage_id
-    # for g in Car.list():
-    #     g.delete()
+def car_add(garage_id):
     data = request.json
-    garage = Garage.get(key=garage_id)
-    if (garage is None):
+    garage = Garage.get(key = garage_id)
+    if garage is None:
         return jsonify({'error': 'Garage not found'}), 404
-    car = Car.add(
-        props={
-            'garage_id': int(garage_id),
-            'plate': data['plate'],
-            'brand': data['brand']
-        }
+    car = Car.create(
+        garage,  # Set the garage as the parent of the car
+        plate=data['plate'],
+        brand=data['brand']
     )
     return jsonify({
-            'id': car.id,
-            'garage_id': garage_id,
-            'plate': car.plate,
-            'brand': car.brand
+        'id': car.id,
+        'garage_id': garage_id,
+        'plate': car.plate,
+        'brand': car.brand
     })
 
 @bp.route('/<car_id>', methods=["PUT"])
