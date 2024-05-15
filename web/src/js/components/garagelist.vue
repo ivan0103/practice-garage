@@ -6,7 +6,7 @@
 
 		</div>
 		<ul class="list-group">
-		    <li v-for="g in garageList" class="list-group-item">
+		    <li v-for="g in garageList" :key="g.id" class="list-group-item">
 				<garage-list-item :garage="g" @delete="deleteGarageFromList"></garage-list-item>
 			</li>
 		</ul>
@@ -33,7 +33,6 @@
 					contentType: 'application/json',
 					timeout: 60000
 				}).then((data) => {
-					console.log(data)
 					this.garageList = data
 				}).always(() => {
 					this.loading = false
