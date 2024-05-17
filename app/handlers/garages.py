@@ -3,10 +3,9 @@ from shared.model.garage import Garage
 from shared.model.car import Car
 import logging
 import json
-
+                         
 bp = Blueprint(name='garages', import_name=__name__, url_prefix='/garages')
 
-#@bp.route('/', defaults={'page': 'index'})
 @bp.route('/', methods=["GET"])
 def garage_list():
     if request.args and 'garage' in request.args:

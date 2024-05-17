@@ -1,0 +1,9 @@
+Flask==2.2.2
+google-api-core
+google-auth
+google-cloud-core
+google-cloud-ndb
+google-cloud-storage
+google-cloud-datastore
+mock
+Werkzeug==2.2.2
