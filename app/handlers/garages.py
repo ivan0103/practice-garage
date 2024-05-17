@@ -52,8 +52,11 @@ def garage_update():
 
 @bp.route('/', methods=["DELETE"])
 def garage_delete():
+    print("DELETE")
     props = json.loads(request.data)
-    garage_id = props['garage']
+    print(props)
+    garage_id = props['garage']['id']
+    print(garage_id)
     if garage_id is None:
         return jsonify({'error': 'Garage ID not provided'}), 400
     garage = Garage.get(key=garage_id)

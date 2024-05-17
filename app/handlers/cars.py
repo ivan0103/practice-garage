@@ -46,7 +46,6 @@ def car_add(garage_id):
 @bp.route('/<car_id>', methods=["PUT"])
 def car_update(garage_id, car_id):
     props = request.json
-    print(props)
     car = Car.get(key=car_id)
     car.update(props=props)
     return jsonify({
@@ -58,7 +57,6 @@ def car_update(garage_id, car_id):
 
 @bp.route('/<car_id>', methods=["DELETE"])
 def car_delete(garage_id, car_id):
-    print("DELETE")
     if garage_id is None:
         return jsonify({'error': 'Garage ID not provided'}), 400
     garage = Garage.get(key=garage_id)

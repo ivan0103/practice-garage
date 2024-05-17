@@ -50,7 +50,7 @@
           type: 'DELETE',
           contentType: 'application/json',
           url: `/garages/`,
-          data: JSON.stringify({ 'garage': this.garage.id })
+          data: JSON.stringify({ 'garage': this.garage })
         }).then((data) => {
           this.cars = false;
           this.$emit('delete', this.garage.id); // Emit delete event
