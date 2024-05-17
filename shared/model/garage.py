@@ -22,7 +22,7 @@ class Garage(BaseModel):
             query = Garage.query()
             if name:
                 query = query.filter(Garage.name == name)
-            elif brand:
+            if brand:
                 query = query.filter(Garage.brand == brand)
             if limit:
                 return query.fetch(limit)

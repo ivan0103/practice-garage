@@ -16,7 +16,7 @@ class Car(BaseModel):
                 query = query.filter(Car.garage == garage)
             if plate:
                 query = query.filter(Car.plate == plate)
-            elif brand:
+            if brand:
                 query = query.filter(Car.brand == brand)
             if limit:
                 return query.fetch(limit)
